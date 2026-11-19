@@ -31,7 +31,7 @@ def transfer(request):
                                        description='Transfer fee', account=tx.account, date=tx.date, time=tx.time)
         messages.success(request, 'Transfer recorded.')
         return redirect('accounts')
-    return render(request, 'wallets/transfer.html', {'form': form, 'tab': 'wallet'})
+    return render(request, 'transfer.html', {'form': form, 'tab': 'wallet'})
 
 
 def _net_change(t):
@@ -69,7 +69,7 @@ def accounts(request):
         g = groups.setdefault(a.group or 'Accounts', {'name': a.group or 'Accounts', 'items': [], 'total': Decimal(0)})
         g['items'].append(a)
         g['total'] += a.bal
-    return render(request, 'wallets/accounts.html', {
+    return render(request, 'wallet.html', {
         'net': net, 'assets': assets, 'liabilities': liabilities, 'show': show, 'group': group,
         'group_names': sorted({a.group for a in account_list if a.group}), 'groups': groups.values(),
         'view': request.GET.get('view', 'grid'), 'daily': _daily_bars(daily), 'insight': _insight(user),
@@ -103,6 +103,6 @@ def cards(request):
         owed = max(-a.balance, 0)
         limit = a.credit_limit or 0
         cards.append({'card': a, 'owed': owed, 'available': limit - owed, 'pct': int(owed / limit * 100) if limit else 0})
-    return render(request, 'wallets/cards.html', {
+    return render(request, 'cards.html', {
         'cards': cards, 'installments': request.user.debts.filter(kind='installment').count(), 'tab': 'plan',
     })

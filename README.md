@@ -47,7 +47,8 @@ extrackash-expense-tracker/
 │   ├── system_settings/     Settings, appearance, delete account
 │   └── core/                Shared helpers, {% icon %} and |peso tags, seed_demo
 ├── config/                  Django settings and root URLs
-├── templates/               Shared layouts (base.html, form.html, partials)
+├── templates/               Every page (home.html, wallet.html, …) + base.html, form.html
+│   └── components/          navbar, popups, page_header, form_field, transaction_row, …
 ├── static/
 │   ├── css/                 style.css (design system, light + dark)
 │   ├── js/                  app.js
@@ -62,8 +63,8 @@ extrackash-expense-tracker/
 └── manage.py
 ```
 
-Each feature app follows the same layout: `models.py`, `views.py`, `urls.py`, `forms.py`, `admin.py`,
-`migrations/` and `templates/<app>/`. See [docs/architecture.md](docs/architecture.md) for how they connect.
+Each feature app follows the same layout: `models.py`, `views.py`, `urls.py`, `forms.py`, `admin.py` and
+`migrations/`. Its pages are in `templates/` (one file per screen, e.g. `wallet.html`, `budgets.html`). See [docs/architecture.md](docs/architecture.md) for how they connect.
 
 ## Installation (Windows)
 

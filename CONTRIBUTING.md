@@ -24,8 +24,8 @@ For a quick bug fix outside your area, make a short-lived branch instead: `git s
 
 ## 3. Work, then test
 
-- Keep changes inside your app folder (`apps/<app>/`) where you can.
-- Shared files (`templates/base.html`, `static/css/style.css`, `static/js/app.js`, `config/`, `apps/core/`)
+- Keep changes inside your app folder (`apps/<app>/`) and your own pages in `templates/` where you can.
+- Shared files (`templates/base.html`, `templates/components/`, `templates/form.html`, `static/css/style.css`, `static/js/app.js`, `config/`, `apps/core/`)
   affect everyone: tell the team before changing them, and keep those changes small.
 - Changed a model? Run `python manage.py makemigrations` and commit the new migration file.
 - Run `python manage.py test` and check your screens at phone size before pushing.

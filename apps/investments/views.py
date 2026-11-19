@@ -14,7 +14,7 @@ def investments(request):
     invested = sum(i.invested for i in items)
     for i in items:
         i.share = int(i.value / value * 100) if value else 0
-    return render(request, 'investments/investments.html', {
+    return render(request, 'investments.html', {
         'items': items, 'value': value, 'gain': value - invested,
         'gain_pct': round((value - invested) / invested * 100, 2) if invested else 0, 'tab': 'plan',
     })

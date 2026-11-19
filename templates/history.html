@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}History · Extrackash{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <h1>History</h1>
+  <a class="icon-btn" href="{% url 'add' %}" aria-label="Add transaction">{% icon 'plus' %}</a>
+</header>
+
+<details class="filters" {% if filtered %}open{% endif %}>
+  <summary class="chips"><span>{% icon 'search' %}Search &amp; filter</span>{% if filtered %}<a href="{% url 'activity' %}">Clear</a>{% endif %}</summary>
+  <form method="get" class="auth-form">
+    <label class="label" for="q">Search</label>
+    <input id="q" name="q" type="search" value="{{ f.q }}" placeholder="Name, note, category or amount">
+    <div class="two">
+      <div><label class="label" for="date">Date</label><input id="date" name="date" type="date" value="{{ f.date }}"></div>
+      <div><label class="label" for="kind">Type</label>
+        <select id="kind" name="kind">
+          <option value="">All</option>
+          <option value="expense" {% if f.kind == 'expense' %}selected{% endif %}>Expenses</option>
+          <option value="income" {% if f.kind == 'income' %}selected{% endif %}>Income</option>
+          <option value="transfer" {% if f.kind == 'transfer' %}selected{% endif %}>Transfers</option>
+        </select></div>
+    </div>
+    <div class="two">
+      <div><label class="label" for="account">Account</label>
+        <select id="account" name="account">
+          <option value="">All</option>
+          {% for a in accounts %}<option value="{{ a.pk }}" {% if f.account == a.pk|stringformat:"d" %}selected{% endif %}>{{ a.name }}</option>{% endfor %}
+        </select></div>
+      <div><label class="label" for="tag">Tag</label><input id="tag" name="tag" value="{{ f.tag }}" placeholder="e.g. japan"></div>
+    </div>
+    <button class="btn block">Show results</button>
+  </form>
+</details>
+
+{% for day in days %}
+<section class="day-group">
+  <div class="between day-head">
+    <span><strong>{% if day.date == today %}Today{% else %}{{ day.date|date:"l" }}{% endif %}</strong><small class="muted">{{ day.date|date:"F j, Y" }}</small></span>
+    <span class="day-totals">{% if day.out %}<span class="pill out">−{{ day.out|peso }}</span>{% endif %}{% if day.in %}<span class="pill in">+{{ day.in|peso }}</span>{% endif %}</span>
+  </div>
+  <ul class="list timeline">
+    {% for t in day.items %}{% include 'components/transaction_row.html' with show_time=True %}{% endfor %}
+  </ul>
+</section>
+{% empty %}
+<p class="empty">No transactions found.</p>
+{% endfor %}
+{% endblock %}

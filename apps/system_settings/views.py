@@ -10,7 +10,7 @@ def explore(request):
 
 @login_required
 def settings_page(request):
-    return render(request, 'system_settings/settings.html', {'tab': 'plan'})
+    return render(request, 'settings.html', {'tab': 'plan'})
 
 
 @login_required
@@ -21,4 +21,4 @@ def delete_account(request):
         user.delete()
         messages.success(request, 'Your account and data were deleted.')
         return redirect('welcome')
-    return render(request, 'system_settings/delete_account.html', {'tab': 'plan'})
+    return render(request, 'delete_account.html', {'tab': 'plan'})

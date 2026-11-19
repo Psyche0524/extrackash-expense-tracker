@@ -38,7 +38,7 @@ def activity(request):
             day['out'] += t.amount
         elif t.kind == 'income':
             day['in'] += t.amount
-    return render(request, 'transactions/activity.html', {
+    return render(request, 'history.html', {
         'days': days.values(), 'f': f, 'accounts': request.user.accounts.all(), 'filtered': any(f.values()),
         'today': timezone.localdate(),
         'tab': 'activity',
@@ -68,7 +68,7 @@ def add_transaction(request):
                               monthly=data['owed_amount'], account=tx.account, note=f'For {tx.description}')
         messages.success(request, 'Income saved.' if tx.kind == 'income' else 'Expense saved.')
         return redirect('activity')
-    return render(request, 'transactions/add.html', {'form': form, 'tab': 'activity', 'scan': 'scan' in request.GET})
+    return render(request, 'add.html', {'form': form, 'tab': 'activity', 'scan': 'scan' in request.GET})
 
 
 @login_required
@@ -82,7 +82,7 @@ def transaction_photo(request, pk):
 @login_required
 def transaction_detail(request, pk):
     tx = get_object_or_404(Transaction, pk=pk, user=request.user)
-    return render(request, 'transactions/transaction.html', {'t': tx, 'tab': 'activity'})
+    return render(request, 'transaction.html', {'t': tx, 'tab': 'activity'})
 
 
 @login_required
@@ -95,7 +95,7 @@ def transaction_edit(request, pk):
         form.save()
         messages.success(request, 'Saved.')
         return redirect('transaction', pk=tx.pk)
-    return render(request, 'wallets/transfer.html' if is_transfer else 'transactions/add.html', {'form': form, 'tab': 'activity'})
+    return render(request, 'transfer.html' if is_transfer else 'add.html', {'form': form, 'tab': 'activity'})
 
 
 @login_required

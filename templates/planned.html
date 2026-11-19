@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load money %}
+
+{% block title %}Planned payments · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'plan' as back %}{% url 'planned_new' as plus %}{% include 'components/page_header.html' with title='Planned payments' %}
+
+<p class="label">Still due this month</p>
+<p class="big dark">{{ month_total|peso }}</p>
+<p class="muted">Bills and income you expect. Mark one paid to log it and move to the next date.</p>
+
+{% for p in items %}
+<section class="panel">
+  <div class="between">
+    <h3>{{ p.name }}</h3>
+    <span class="amount {{ p.kind }}">{% if p.kind == 'income' %}+{% else %}−{% endif %}{{ p.amount|peso }}</span>
+  </div>
+  <p class="muted small">{{ p.get_repeat_display }} · next {{ p.next_date|date:"M j, Y" }}{% if p.account %} · {{ p.account }}{% endif %}</p>
+  <div class="actions">
+    <form method="post" action="{% url 'planned_done' p.pk %}">{% csrf_token %}<button class="btn block">{% if p.kind == 'income' %}Mark received{% else %}Mark paid{% endif %}</button></form>
+    <a class="btn soft" href="{% url 'planned_edit' p.pk %}">Edit</a>
+  </div>
+  <form method="post" action="{% url 'planned_delete' p.pk %}" onsubmit="return confirm('Remove this planned payment?')">
+    {% csrf_token %}<button class="link-btn danger">Remove</button>
+  </form>
+</section>
+{% empty %}
+<p class="empty">Nothing planned yet. Add rent, subscriptions, salary and other things that repeat.</p>
+{% endfor %}
+
+<a class="btn block" href="{% url 'planned_new' %}">+ Plan a payment</a>
+{% endblock %}

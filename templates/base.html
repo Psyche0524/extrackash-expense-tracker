@@ -1,4 +1,4 @@
-{% load static icons %}<!doctype html>
+{% load static %}<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -23,31 +23,11 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  {% if messages %}
-  <div class="toasts" role="status">
-    {% for m in messages %}<p class="toast">{% icon 'check' %}{{ m }}</p>{% endfor %}
-  </div>
-  {% endif %}
+  {% include 'components/popups.html' %}
   <main class="screen">
     {% block content %}{% endblock %}
   </main>
-  {% block tabbar %}
-  <nav class="tabbar" aria-label="Main">
-    <a href="{% url 'home' %}" {% if tab == 'home' %}aria-current="page"{% endif %}>{% icon 'home' %}<span>Home</span></a>
-    <a href="{% url 'accounts' %}" {% if tab == 'wallet' %}aria-current="page"{% endif %}>{% icon 'wallet' %}<span>Wallet</span></a>
-    <a href="{% url 'plan' %}" {% if tab == 'plan' %}aria-current="page"{% endif %}>{% icon 'plan' %}<span>Plan</span></a>
-    <a href="{% url 'activity' %}" {% if tab == 'activity' %}aria-current="page"{% endif %}>{% icon 'history' %}<span>History</span></a>
-  </nav>
-  <details class="fab">
-    <summary aria-label="Add">{% icon 'plus' %}</summary>
-    <nav class="fab-menu" aria-label="Add">
-      <a href="{% url 'add' %}">{% icon 'out' %}Expense</a>
-      <a href="{% url 'add' %}?kind=income">{% icon 'in' %}Income</a>
-      <a href="{% url 'transfer' %}">{% icon 'swap' %}Transfer</a>
-      <a href="{% url 'add' %}?scan=1">{% icon 'camera' %}Scan receipt</a>
-    </nav>
-  </details>
-  {% endblock %}
+  {% block tabbar %}{% include 'components/navbar.html' %}{% endblock %}
   <script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load money %}
+
+{% block title %}Your plan · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'budget_new' as plus %}{% include 'components/page_header.html' with title='Your plan' %}
+
+<p class="step">{{ month|date:"F Y" }}</p>
+<p class="label">Left to spend</p>
+<p class="big dark">{{ left|peso }}</p>
+<p class="muted">{{ spent|peso }} spent of your {{ total|peso }} plan</p>
+<div class="bar"><span style="width: {{ pct|default:0 }}%"></span></div>
+
+{% include 'components/plan_tabs.html' %}
+
+<ul class="list">
+  {% for r in rows %}
+  <li>
+    <a class="budget-row" href="{% url 'budget' r.budget.pk %}">
+      <span class="between"><strong>{{ r.budget.get_category_display }}</strong><span class="pct {% if r.pct >= 80 %}warn{% endif %}">{{ r.pct }}%</span></span>
+      <small class="muted">{{ r.spent|peso }} / {{ r.budget.limit|peso }}</small>
+      <span class="bar {% if r.pct >= 80 %}warn{% endif %}"><span style="width: {% if r.pct > 100 %}100{% else %}{{ r.pct }}{% endif %}%"></span></span>
+    </a>
+  </li>
+  {% empty %}<li class="empty">No budgets yet. Create one for a category you want to keep an eye on.</li>{% endfor %}
+</ul>
+
+<a class="btn block" href="{% url 'budget_new' %}">+ Create budget</a>
+{% endblock %}

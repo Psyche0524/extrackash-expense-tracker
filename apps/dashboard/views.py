@@ -47,7 +47,7 @@ def home(request):
     for p in due:
         p.days_left = (p.next_date - today).days
     years = {'3y': 3, '5y': 5}.get(request.GET.get('forecast'), 1)
-    return render(request, 'dashboard/home.html', {
+    return render(request, 'home.html', {
         'today': today, 'insight': _insight(user),
         'greeting': _greeting(timezone.localtime().hour),
         'span': span, 'span_in': _sum(period.filter(kind='income')), 'span_out': _sum(period.filter(kind='expense')),

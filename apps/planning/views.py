@@ -17,7 +17,7 @@ from apps.transactions.models import Transaction
 def plan(request):
     user = request.user
     debts = user.debts.all()
-    return render(request, 'planning/plan_hub.html', {
+    return render(request, 'plan.html', {
         'budgets': user.budgets.count(), 'goals': user.goals.count(),
         'loans': debts.filter(kind='loan').count(), 'installments': debts.filter(kind='installment').count(),
         'receivables': debts.filter(kind='receivable').count(),
@@ -33,7 +33,7 @@ def budgets(request):
     rows = _budget_rows(request.user)
     total = sum(r['budget'].limit for r in rows)
     spent = sum(r['spent'] for r in rows)
-    return render(request, 'planning/plan.html', {
+    return render(request, 'budgets.html', {
         'rows': rows, 'total': total, 'spent': spent, 'left': total - spent,
         'pct': int(spent / total * 100) if total else 0, 'month': timezone.localdate(), 'tab': 'plan', 'sub': 'budgets',
     })
@@ -46,7 +46,7 @@ def budget_detail(request, pk):
     days_left = (row['end'] - timezone.localdate()).days
     recent = request.user.transactions.filter(kind='expense', category=budget.category,
                                               date__gte=row['start'], date__lt=row['end']).select_related('account')
-    return render(request, 'planning/budget.html', {
+    return render(request, 'budget.html', {
         **row, 'recent': recent, 'days_left': days_left, 'next_month': row['end'],
         'per_day': max(row['left'], 0) / days_left, 'tab': 'plan',
     })
@@ -55,7 +55,7 @@ def budget_detail(request, pk):
 @login_required
 def planned(request):
     items = list(request.user.planned.filter(active=True).select_related('account'))
-    return render(request, 'planning/planned.html', {
+    return render(request, 'planned.html', {
         'items': items, 'month_total': sum(p.amount for p in items if p.kind == 'expense' and p.next_date < _add_month_start()),
         'tab': 'plan',
     })
@@ -102,7 +102,7 @@ def trips(request):
     for t in trip_list:
         t.total = t.spent
         t.pct = int(t.total / t.budget * 100) if t.budget else 0
-    return render(request, 'planning/trips.html', {'trips': trip_list, 'tab': 'plan'})
+    return render(request, 'travel.html', {'trips': trip_list, 'tab': 'plan'})
 
 
 @login_required
@@ -131,7 +131,7 @@ def tags(request):
             row = totals.setdefault(tag, {'tag': tag, 'total': Decimal(0), 'count': 0})
             row['total'] += t.amount
             row['count'] += 1
-    return render(request, 'planning/tags.html', {
+    return render(request, 'tags.html', {
         'tags': sorted(totals.values(), key=lambda r: -r['total']), 'tab': 'plan',
     })
 
@@ -157,7 +157,7 @@ def budget_delete(request, pk):
 @login_required
 def goals(request):
     goal_list = list(request.user.goals.all())
-    return render(request, 'planning/goals.html', {
+    return render(request, 'goals.html', {
         'goals': goal_list, 'total': sum(g.saved for g in goal_list), 'tab': 'plan', 'sub': 'goals',
     })
 
@@ -166,7 +166,7 @@ def goals(request):
 def goal_detail(request, pk):
     goal = get_object_or_404(Goal, pk=pk, user=request.user)
     saved = goal.saved
-    return render(request, 'planning/goal.html', {
+    return render(request, 'goal.html', {
         'goal': goal, 'saved': saved, 'left': max(goal.target - saved, 0),
         'pct': min(int(saved / goal.target * 100), 100), 'tab': 'plan',
     })
@@ -207,7 +207,7 @@ def cashflow(request):
     debts = [d for d in user.debts.all() if d.remaining > 0]
     commitments = sum(min(d.monthly, d.remaining) for d in debts)
     available = _available(user)
-    return render(request, 'planning/cashflow.html', {
+    return render(request, 'cashflow.html', {
         'available': available, 'income': income, 'spending': spending, 'commitments': commitments,
         'debt_count': len(debts), 'projected': available + income - spending - commitments,
         'until': today + timedelta(days=30), 'tab': 'plan', 'sub': 'cashflow',

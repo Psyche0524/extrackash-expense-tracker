@@ -8,7 +8,7 @@ from apps.accounts.forms import EmailLoginForm
 # so templates use {% url 'home' %}, {% url 'add' %}, etc.
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(
-        template_name='accounts/login.html', authentication_form=EmailLoginForm, redirect_authenticated_user=True,
+        template_name='login.html', authentication_form=EmailLoginForm, redirect_authenticated_user=True,
     ), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', include('apps.accounts.urls')),

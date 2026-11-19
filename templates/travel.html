@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}Travel · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'plan' as back %}{% url 'trip_new' as plus %}{% include 'components/page_header.html' with title='Travel' %}
+
+{% for t in trips %}
+<a class="panel" href="{% url 'trip_edit' t.pk %}">
+  <h3 class="with-icon">{% icon 'travel' %}{{ t.name }}</h3>
+  <p class="muted small">{{ t.start|date:"M j" }} – {{ t.end|date:"M j, Y" }}</p>
+  {% if t.budget %}<div class="bar {% if t.pct >= 80 %}warn{% endif %}"><span style="width: {% if t.pct > 100 %}100{% else %}{{ t.pct }}{% endif %}%"></span></div>{% endif %}
+  <p>{{ t.total|peso }} spent{% if t.budget %} of {{ t.budget|peso }}{% endif %}</p>
+</a>
+{% empty %}
+<p class="empty">No trips yet. Plan one and every expense during those dates counts toward it.</p>
+{% endfor %}
+
+<a class="btn block" href="{% url 'trip_new' %}">+ Plan a trip</a>
+{% endblock %}
