@@ -15,7 +15,7 @@ def debts(request, kind):
     for d in debt_list:
         d.pct = min(int(d.paid / d.total * 100), 100)
     active = [d for d in debt_list if d.remaining > 0]
-    return render(request, 'debts/debts.html', {
+    return render(request, 'debts.html', {
         'debts': debt_list, 'kind': kind, 'monthly': sum(min(d.monthly, d.remaining) for d in active),
         'remaining': sum(d.remaining for d in active), 'tab': 'plan',
     })

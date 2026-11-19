@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}{{ goal.name }} · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'goals' as back %}{% include 'components/page_header.html' with title=goal.name %}
+
+<section class="hero">
+  <p class="label">{{ goal.note|default:"Your goal" }}</p>
+  <p class="big">{{ saved|peso }}</p>
+  <p>of {{ goal.target|peso }} · {{ pct }}% complete</p>
+  <div class="bar light"><span style="width: {{ pct }}%"></span></div>
+  <p class="label">{% if left %}{{ left|peso }} to go{% else %}Goal reached!{% endif %}{% if goal.target_date %} · by {{ goal.target_date|date:"F Y" }}{% endif %}</p>
+</section>
+
+<h2 class="section-title">Contributions</h2>
+<ul class="list">
+  {% for c in goal.contributions.all %}
+  <li class="row">
+    <span class="tile income">{% icon 'goal' %}</span>
+    <span class="row-text"><strong>{{ c.description }}</strong><small>{{ c.date|date:"M j" }}</small></span>
+    <span class="amount income">+{{ c.amount|peso }}</span>
+  </li>
+  {% empty %}<li class="empty">No money added yet.</li>{% endfor %}
+</ul>
+
+<a class="btn block" href="{% url 'goal_add' goal.pk %}">+ Add money</a>
+<a class="btn soft block left" href="{% url 'goal_edit' goal.pk %}">Edit goal</a>
+<form method="post" action="{% url 'goal_delete' goal.pk %}" onsubmit="return confirm('Delete this goal and its contributions?')">
+  {% csrf_token %}<button class="link-btn danger">Delete goal</button>
+</form>
+<p class="fine">Goal savings are included in account balances, not counted twice.</p>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load icons %}{# Bottom tab bar + floating add menu. Pages hide both with {% block tabbar %}{% endblock %}. #}
+<nav class="tabbar" aria-label="Main">
+  <a href="{% url 'home' %}" {% if tab == 'home' %}aria-current="page"{% endif %}>{% icon 'home' %}<span>Home</span></a>
+  <a href="{% url 'accounts' %}" {% if tab == 'wallet' %}aria-current="page"{% endif %}>{% icon 'wallet' %}<span>Wallet</span></a>
+  <a href="{% url 'plan' %}" {% if tab == 'plan' %}aria-current="page"{% endif %}>{% icon 'plan' %}<span>Plan</span></a>
+  <a href="{% url 'activity' %}" {% if tab == 'activity' %}aria-current="page"{% endif %}>{% icon 'history' %}<span>History</span></a>
+</nav>
+<details class="fab">
+  <summary aria-label="Add">{% icon 'plus' %}</summary>
+  <nav class="fab-menu" aria-label="Add">
+    <a href="{% url 'add' %}">{% icon 'out' %}Expense</a>
+    <a href="{% url 'add' %}?kind=income">{% icon 'in' %}Income</a>
+    <a href="{% url 'transfer' %}">{% icon 'swap' %}Transfer</a>
+    <a href="{% url 'add' %}?scan=1">{% icon 'camera' %}Scan receipt</a>
+  </nav>
+</details>

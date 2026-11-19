@@ -1,0 +1,6 @@
+{% load icons %}{# "Saved." style confirmations from Django's messages framework. #}
+{% if messages %}
+<div class="toasts" role="status">
+  {% for m in messages %}<p class="toast">{% icon 'check' %}{{ m }}</p>{% endfor %}
+</div>
+{% endif %}

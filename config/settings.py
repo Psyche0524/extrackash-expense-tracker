@@ -73,7 +73,7 @@ LOGOUT_REDIRECT_URL = 'welcome'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # shared layouts; app pages live in apps/<name>/templates/
+        'DIRS': [BASE_DIR / 'templates'],  # every page; reusable pieces in templates/components/
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

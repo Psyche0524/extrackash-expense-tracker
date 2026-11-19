@@ -43,7 +43,7 @@ def reports(request):
     for x in months:
         x['pct'] = int(x['total'] / peak * 100)
 
-    return render(request, 'reports/reports.html', {
+    return render(request, 'reports.html', {
         'period': period, 'start': start, 'spent': spent, 'diff': prev - spent, 'cats': cats, 'months': months, 'tab': 'plan',
     })
 
