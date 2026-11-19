@@ -114,7 +114,7 @@ Development needs none. For deployment, copy the names from [.env.example](.env.
 |---|---|---|
 | Developer 1 – Psyche0524 | Core & experience | `accounts`, `dashboard`, `system_settings`, `households`, shared design (`templates/`, `static/`) |
 | Developer 2 – MVDeguzman | Money in & out | `transactions`, `wallets`, `debts` |
-| Developer 3 – (to be added) | Planning & insights | `planning`, `investments`, `reports` |
+| Developer 3 – Nasju17 | Planning & insights | `planning`, `investments`, `reports` |
 
 Assignments can change; update this table when they do.
 
