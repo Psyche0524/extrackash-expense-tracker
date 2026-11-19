@@ -167,7 +167,7 @@ python manage.py runserver 0.0.0.0:8000
 ```bash
 python manage.py test                              # 1. everything must pass
 git add .                                          # 2. pick up your changes
-git commit -m "feat: add edit button to wallet cards"   # 3. save them with a prefix
+git commit -m "Add edit button to wallet cards"   # 3. save them with a clear name
 git push                                           # 4. send them to GitHub
 ```
 
@@ -175,8 +175,8 @@ git push                                           # 4. send them to GitHub
 6. Set **base** to **`develop`** (not `main`), fill in the template, and create the pull request.
 7. A teammate reviews and approves it, then it gets merged.
 
-Commit prefixes: `feat:` new feature · `fix:` bug fix · `style:` look/CSS · `refactor:` same behaviour, cleaner code ·
-`docs:` documentation · `test:` tests · `chore:` maintenance.
+Commit and pull request names: plain sentences that say what changed, starting with a verb, no prefixes.
+Examples: `Add edit button to wallet cards`, `Fix outline in the mascot`, `Update README for new teammates`.
 
 ### Handy commands
 

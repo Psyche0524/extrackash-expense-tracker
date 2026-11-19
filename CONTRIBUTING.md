@@ -30,19 +30,16 @@ For a quick bug fix outside your area, make a short-lived branch instead: `git s
 - Changed a model? Run `python manage.py makemigrations` and commit the new migration file.
 - Run `python manage.py test` and check your screens at phone size before pushing.
 
-## 4. Commit with a prefix
+## 4. Commit with a clear, plain name
 
-| Prefix | Use for |
+Write what changed as a short sentence that starts with a verb. No prefixes like `feat:` or `fix:`.
+Use the same style for pull request titles.
+
+| Good | Not like this |
 |---|---|
-| `feat:` | New functionality |
-| `fix:` | Bug fixes |
-| `refactor:` | Code restructuring, same behaviour |
-| `style:` | Visual/CSS changes |
-| `docs:` | Documentation |
-| `test:` | Tests |
-| `chore:` | Maintenance (dependencies, config) |
-
-Example: `feat: add monthly budget rollover`
+| `Add monthly budget rollover` | `feat: add monthly budget rollover` |
+| `Fix outline in the mascot` | `fix: mascot` |
+| `Update wallet card colours` | `changes`, `update`, `asdf` |
 
 ## 5. Push and open a pull request into `develop`
 
