@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static icons %}
 
 {% block title %}Welcome · Extrackash{% endblock %}
 {% block tabbar %}{% endblock %}
@@ -12,7 +12,7 @@
 <p class="lede">Meet your money, without the stress. Track today. Make space for tomorrow.</p>
 
 <div class="note">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+  {% icon 'shield' %}
   <p>Your finances stay yours. Start privately, no bank login needed.</p>
 </div>
 

@@ -56,7 +56,8 @@ Views render pages by file name, e.g. `render(request, 'wallet.html', ...)`; pag
 Static files:
 
 - Static: `static/css/style.css` (design tokens, light + dark), `static/js/app.js`,
-  `static/icons/icons.svg` (used via `{% icon 'name' %}`), `static/images/`.
+  `static/icons/<name>.svg` (one file per icon, used via `{% icon 'name' %}`; add a file there to add an icon),
+  `static/images/mascot-half.png`.
 
 ## Security notes
 
