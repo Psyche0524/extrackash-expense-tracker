@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load icons %}
+
+{% block title %}Plan · Extrackash{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <span><h1>Plan</h1><small class="muted">Budgets, goals and what's ahead</small></span>
+  <a class="icon-btn" href="{% url 'reports' %}" aria-label="Reports">{% icon 'report' %}</a>
+</header>
+
+<ul class="list surface menu">
+  <li><a class="row" href="{% url 'budgets' %}"><span class="tile">{% icon 'budget' %}</span><span class="row-text"><strong>Category budgets</strong><small>Daily to yearly limits · {{ budgets }} set</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'goals' %}"><span class="tile">{% icon 'goal' %}</span><span class="row-text"><strong>Personal goals</strong><small>Savings and milestones · {{ goals }} active</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'planned' %}"><span class="tile">{% icon 'planned' %}</span><span class="row-text"><strong>Planned payments</strong><small>{{ recurring }} recurring · {{ one_time }} one-time</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'loans' %}"><span class="tile">{% icon 'debt' %}</span><span class="row-text"><strong>Debt</strong><small>Money you still owe · {{ loans }} loan{{ loans|pluralize }}</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'receivables' %}"><span class="tile">{% icon 'owed' %}</span><span class="row-text"><strong>Money owed to you</strong><small>{{ receivables }} tracked</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'investments' %}"><span class="tile">{% icon 'invest' %}</span><span class="row-text"><strong>Investments</strong><small>{{ investments }} holding{{ investments|pluralize }}</small></span>{% icon 'next' %}</a></li>
+</ul>
+
+<div class="two-cards">
+  <a class="card tile-link" href="{% url 'trips' %}"><span class="tile">{% icon 'travel' %}</span><span><strong>Travel</strong><small class="muted">{{ trips }} trip{{ trips|pluralize }}</small></span></a>
+  <a class="card tile-link" href="{% url 'tags' %}"><span class="tile">{% icon 'tag' %}</span><span><strong>Tags</strong><small class="muted">Spending by tag</small></span></a>
+</div>
+
+<h2 class="section-title">More</h2>
+<ul class="list surface menu">
+  <li><a class="row" href="{% url 'cashflow' %}"><span class="tile">{% icon 'cashflow' %}</span><span class="row-text"><strong>Cashflow</strong><small>Look 30 days ahead</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'cards' %}"><span class="tile">{% icon 'card' %}</span><span class="row-text"><strong>Cards &amp; installments</strong><small>{{ installments }} installment{{ installments|pluralize }}</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'reports' %}"><span class="tile">{% icon 'report' %}</span><span class="row-text"><strong>Reports</strong><small>Week, month and year</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'shared' %}"><span class="tile">{% icon 'users' %}</span><span class="row-text"><strong>Shared finances</strong><small>Split with your household</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'settings' %}"><span class="tile">{% icon 'settings' %}</span><span class="row-text"><strong>Settings &amp; privacy</strong><small>Profile, export, delete account</small></span>{% icon 'next' %}</a></li>
+</ul>
+{% endblock %}

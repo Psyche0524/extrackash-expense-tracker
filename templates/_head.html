@@ -1,0 +1,6 @@
+{% load icons %}{# Page header: back arrow (optional), title, and an optional + link. #}
+<header class="page-head">
+  {% if back %}<a class="icon-btn" href="{{ back }}" aria-label="Back">{% icon 'back' %}</a>{% endif %}
+  <h1>{{ title }}</h1>
+  {% if plus %}<a class="icon-btn" href="{{ plus }}" aria-label="Add">{% icon 'plus' %}</a>{% else %}<span class="icon-spacer"></span>{% endif %}
+</header>

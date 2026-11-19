@@ -1,0 +1,53 @@
+{% load static icons %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f7f4">
+  <script>
+    // Apply the theme before the page paints so dark mode never flashes white.
+    // shortcut: the choice is saved per device (localStorage), not per account; move to the user model if it should sync.
+    (function () {
+      var pick; try { pick = localStorage.getItem('theme'); } catch (e) {}
+      var dark = pick === 'dark' || (pick !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.querySelector('meta[name=theme-color]').content = dark ? '#0c1411' : '#f3f7f4';
+    })();
+  </script>
+  <title>{% block title %}Extrackash{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/logo.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  {% if messages %}
+  <div class="toasts" role="status">
+    {% for m in messages %}<p class="toast">{% icon 'check' %}{{ m }}</p>{% endfor %}
+  </div>
+  {% endif %}
+  <main class="screen">
+    {% block content %}{% endblock %}
+  </main>
+  {% block tabbar %}
+  <nav class="tabbar" aria-label="Main">
+    <a href="{% url 'home' %}" {% if tab == 'home' %}aria-current="page"{% endif %}>{% icon 'home' %}<span>Home</span></a>
+    <a href="{% url 'accounts' %}" {% if tab == 'wallet' %}aria-current="page"{% endif %}>{% icon 'wallet' %}<span>Wallet</span></a>
+    <a href="{% url 'plan' %}" {% if tab == 'plan' %}aria-current="page"{% endif %}>{% icon 'plan' %}<span>Plan</span></a>
+    <a href="{% url 'activity' %}" {% if tab == 'activity' %}aria-current="page"{% endif %}>{% icon 'history' %}<span>History</span></a>
+  </nav>
+  <details class="fab">
+    <summary aria-label="Add">{% icon 'plus' %}</summary>
+    <nav class="fab-menu" aria-label="Add">
+      <a href="{% url 'add' %}">{% icon 'out' %}Expense</a>
+      <a href="{% url 'add' %}?kind=income">{% icon 'in' %}Income</a>
+      <a href="{% url 'transfer' %}">{% icon 'swap' %}Transfer</a>
+      <a href="{% url 'add' %}?scan=1">{% icon 'camera' %}Scan receipt</a>
+    </nav>
+  </details>
+  {% endblock %}
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

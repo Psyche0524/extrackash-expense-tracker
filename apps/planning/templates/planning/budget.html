@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load money %}
+
+{% block title %}{{ budget.get_category_display }} · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'budgets' as back %}{% include '_head.html' with title=budget.get_category_display %}
+
+<p class="label">Available this month</p>
+<p class="big dark">{{ left|peso }}</p>
+<p class="muted">{{ spent|peso }} spent of {{ budget.limit|peso }}</p>
+<div class="bar {% if pct >= 80 %}warn{% endif %}"><span style="width: {% if pct > 100 %}100{% else %}{{ pct }}{% endif %}%"></span></div>
+
+<section class="note-card">
+  {% if left >= 0 %}
+    <h2>Room to enjoy the month.</h2>
+    <p>About {{ per_day|peso }} a day for the next {{ days_left }} days. You're within your plan.</p>
+  {% else %}
+    <h2>A little over this month.</h2>
+    <p>You're {{ left|peso }} past your limit. It resets on {{ next_month|date:"j F" }}.</p>
+  {% endif %}
+</section>
+
+<p class="label">Recent spending</p>
+<ul class="list">
+  {% for t in recent %}{% include 'transactions/_row.html' %}{% empty %}<li class="empty">Nothing spent here yet this month.</li>{% endfor %}
+</ul>
+
+<a class="btn soft block left" href="{% url 'budget_edit' budget.pk %}">Edit monthly limit</a>
+<form method="post" action="{% url 'budget_delete' budget.pk %}" onsubmit="return confirm('Delete this budget?')">
+  {% csrf_token %}<button class="link-btn danger">Delete budget</button>
+</form>
+<p class="fine">Resets {{ next_month|date:"j F" }} · Rollover off</p>
+{% endblock %}

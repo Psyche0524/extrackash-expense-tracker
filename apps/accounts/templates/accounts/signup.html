@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load icons %}
+
+{% block title %}Create account · Extrackash{% endblock %}
+{% block tabbar %}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <a class="icon-btn" href="{% url 'welcome' %}" aria-label="Back">{% icon 'back' %}</a>
+  <h1>Make it yours</h1>
+  <span></span>
+</header>
+
+<p class="step">01 / 02 · Create your account</p>
+<h2 class="headline small">A clear picture starts with one account.</h2>
+
+<form method="post" class="auth-form" novalidate>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% with field=form.first_name %}{% include '_field.html' %}{% endwith %}
+  {% with field=form.email %}{% include '_field.html' %}{% endwith %}
+  {% with field=form.password1 %}{% include '_field.html' %}{% endwith %}
+  {% with field=form.password2 %}{% include '_field.html' %}{% endwith %}
+  <p class="hint">Use at least 8 characters. Avoid common passwords.</p>
+  <button type="submit" class="btn block arrow">Create my space</button>
+</form>
+
+<p class="switch">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+{% endblock %}

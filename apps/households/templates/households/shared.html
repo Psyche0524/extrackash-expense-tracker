@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load money %}
+
+{% block title %}Shared finances · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'plan' as back %}{% include '_head.html' with title='Shared finances' %}
+
+{% if not home %}
+<section class="hero">
+  <p class="label">Your household</p>
+  <p class="big">Better, together.</p>
+  <p>Split shared spending with the people you live with.</p>
+</section>
+<a class="btn block" href="{% url 'household_new' %}">Create a household</a>
+{% else %}
+<section class="hero">
+  <p class="label">{{ home.name }}</p>
+  <p class="big">Better, together.</p>
+  <p class="label">{% for m in members %}{{ m.first_name }}{% if not forloop.last %} + {% endif %}{% endfor %} · {{ members|length }} member{{ members|length|pluralize }}</p>
+</section>
+
+<p class="label">{% now "F" %} household spend</p>
+<p class="big dark">{{ total|peso }}</p>
+{% if home.shared_budget %}
+<div class="bar"><span style="width: {% if pct > 100 %}100{% else %}{{ pct }}{% endif %}%"></span></div>
+<p class="muted">{{ left|peso }} left of {{ home.shared_budget|peso }} shared budget</p>
+{% endif %}
+
+<ul class="list">
+  {% for p in people %}
+  <li class="row">
+    <span class="tile avatar" aria-hidden="true">{{ p.user.first_name|first|upper }}</span>
+    <span class="row-text"><strong>{{ p.user.first_name }} paid</strong>
+      <small>{% if p.balance > 0 %}Is owed {{ p.balance|peso }}{% elif p.balance < 0 %}Owes {{ p.balance|peso|slice:"1:" }}{% else %}All square{% endif %}</small></span>
+    <span class="amount">{{ p.paid|peso }}</span>
+  </li>
+  {% endfor %}
+</ul>
+
+<section class="note-card">
+  <h2>Equal split: {{ share|peso }} each</h2>
+  <p>Mark an expense as "Shared with my household" when you add it. Settle up outside Extrackash.</p>
+</section>
+
+<a class="btn block" href="{% url 'household_invite' %}">Invite a member</a>
+<form method="post" action="{% url 'household_leave' %}" onsubmit="return confirm('Leave this household?')">
+  {% csrf_token %}<button class="btn soft block left">Leave household</button>
+</form>
+{% endif %}
+{% endblock %}

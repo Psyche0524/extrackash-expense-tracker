@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static icons %}
+
+{% block title %}Log in · Extrackash{% endblock %}
+{% block tabbar %}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <a class="icon-btn" href="{% url 'welcome' %}" aria-label="Back">{% icon 'back' %}</a>
+  <h1>Welcome back</h1>
+  <span></span>
+</header>
+
+<img class="mascot-half auth" src="{% static 'images/mascot-half.png' %}" alt="" width="510" height="400">
+<h2 class="headline small">Good to see you again.</h2>
+
+<form method="post" class="auth-form" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<ul class="errorlist"><li>Email or password is incorrect.</li></ul>{% endif %}
+  {% with field=form.username %}{% include '_field.html' %}{% endwith %}
+  {% with field=form.password %}{% include '_field.html' %}{% endwith %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit" class="btn block arrow">Log in</button>
+</form>
+
+<p class="switch">New to Extrackash? <a href="{% url 'signup' %}">Create an account</a></p>
+{% endblock %}

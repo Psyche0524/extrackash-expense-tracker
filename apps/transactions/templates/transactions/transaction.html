@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load money %}
+
+{% block title %}Transaction · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'activity' as back %}{% include '_head.html' with title='Transaction detail' %}
+
+<p class="step">{{ t.description }}{% if t.kind != 'transfer' %} · {{ t.get_category_display }}{% endif %}</p>
+<p class="big dark">{% if t.kind == 'income' %}+{% elif t.kind == 'expense' %}−{% endif %}{{ t.amount|peso }}</p>
+
+<dl class="facts">
+  <div><dt>{% if t.kind == 'transfer' %}From{% else %}Account{% endif %}</dt><dd>{{ t.account|default:"—" }}</dd></div>
+  {% if t.kind == 'transfer' %}<div><dt>To</dt><dd>{{ t.to_account|default:"—" }}</dd></div>{% endif %}
+  <div><dt>Date</dt><dd>{{ t.date|date:"j F Y" }} · {{ t.time|time:"g:i A" }}</dd></div>
+  {% if t.tags %}<div><dt>Tags</dt><dd>{% for tag in t.tag_list %}<a href="{% url 'activity' %}?tag={{ tag|urlencode }}">#{{ tag }}</a> {% endfor %}</dd></div>{% endif %}
+  <div><dt>Type</dt><dd>{{ t.get_kind_display }}</dd></div>
+  {% if t.note %}<div><dt>Note</dt><dd>{{ t.note }}</dd></div>{% endif %}
+  {% if t.shared %}<div><dt>Shared</dt><dd>With household</dd></div>{% endif %}
+</dl>
+{% if t.photo %}<img class="receipt" src="{% url 'transaction_photo' t.pk %}" alt="Photo attached to this transaction">{% endif %}
+
+<a class="btn block" href="{% url 'transaction_edit' t.pk %}">Edit transaction</a>
+<form method="post" action="{% url 'transaction_delete' t.pk %}" onsubmit="return confirm('Delete this transaction?')">
+  {% csrf_token %}<button class="btn soft block left">Delete transaction</button>
+</form>
+<p class="fine">Changes update your budgets and reports automatically.</p>
+{% endblock %}

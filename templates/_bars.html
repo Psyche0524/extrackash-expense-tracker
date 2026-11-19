@@ -1,0 +1,4 @@
+{% load money %}{# 7 small bars; pass bars=[{label, value, pct}] #}
+<div class="mini-bars">
+  {% for b in bars %}<div title="{{ b.value|peso }}"><span style="height: {{ b.pct }}%" {% if forloop.last %}class="today"{% endif %}></span><small>{{ b.label }}</small></div>{% endfor %}
+</div>

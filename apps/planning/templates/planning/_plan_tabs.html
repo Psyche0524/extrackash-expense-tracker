@@ -1,0 +1,5 @@
+<nav class="pills" aria-label="Plan">
+  <a href="{% url 'budgets' %}" {% if sub == 'budgets' %}aria-current="page"{% endif %}>Budgets</a>
+  <a href="{% url 'goals' %}" {% if sub == 'goals' %}aria-current="page"{% endif %}>Goals</a>
+  <a href="{% url 'cashflow' %}" {% if sub == 'cashflow' %}aria-current="page"{% endif %}>Cashflow</a>
+</nav>

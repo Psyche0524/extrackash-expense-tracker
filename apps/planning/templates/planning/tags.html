@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}Tags · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'plan' as back %}{% include '_head.html' with title='Tags' %}
+<p class="muted">Add tags like "birthday" or "japan" when you log an expense, then see what each one cost.</p>
+
+<ul class="list">
+  {% for r in tags %}
+  <li><a class="row" href="{% url 'activity' %}?tag={{ r.tag|urlencode }}">
+    <span class="tile">{% icon 'tag' %}</span>
+    <span class="row-text"><strong>{{ r.tag }}</strong><small>{{ r.count }} expense{{ r.count|pluralize }}</small></span>
+    <span class="amount">{{ r.total|peso }}</span>
+  </a></li>
+  {% empty %}<li class="empty">No tags used yet.</li>{% endfor %}
+</ul>
+{% endblock %}

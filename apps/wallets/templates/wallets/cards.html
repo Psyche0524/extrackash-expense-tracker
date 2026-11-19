@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}Cards · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'plan' as back %}{% include '_head.html' with title='Cards' %}
+
+{% for c in cards %}
+<section class="credit-card">
+  <p class="label">{{ c.card.name }}</p>
+  <p class="mid">•••• •••• ••••</p>
+  <p class="label">{{ user.get_full_name|default:user.first_name|upper }}</p>
+</section>
+
+<p class="label">Current balance owed</p>
+<p class="big dark">{{ c.owed|peso }}</p>
+{% if c.card.due_day %}<p class="muted">Due on day {{ c.card.due_day }} of the month</p>{% endif %}
+{% if c.card.credit_limit %}
+<div class="bar"><span style="width: {{ c.pct }}%"></span></div>
+<p class="muted small">{{ c.available|peso }} available of {{ c.card.credit_limit|peso }} limit</p>
+{% endif %}
+<a class="btn block" href="{% url 'transfer' %}?to={{ c.card.pk }}">Record a payment</a>
+<a class="btn soft block left" href="{% url 'account_edit' c.card.pk %}">Edit card</a>
+<hr>
+{% empty %}
+<p class="empty">No credit cards yet. Add one as an account with type "Credit card".</p>
+<a class="btn block" href="{% url 'account_new' %}?kind=credit">+ Add a card</a>
+{% endfor %}
+
+<a class="row" href="{% url 'installments' %}">
+  <span class="tile">{% icon 'planned' %}</span>
+  <span class="row-text"><strong>Installments</strong><small>{{ installments }} plan{{ installments|pluralize }}</small></span>
+ 
+</a>
+<p class="fine">For tracking only. Pay through your bank, then record it here.</p>
+{% endblock %}
