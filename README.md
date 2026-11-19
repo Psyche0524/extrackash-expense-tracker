@@ -130,3 +130,75 @@ feature/<app> ──PR──► develop ──PR (when stable)──► main
 
 Both `main` and `develop` are protected: changes need a pull request and one approval.
 Full guide: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Working on your branch (step by step)
+
+Example: MVDeguzman working on wallets. Use your own branch from the table below.
+
+| Teammate | Your branches |
+|---|---|
+| Psyche0524 | `feature/accounts`, `feature/dashboard`, `feature/system-settings`, `feature/households` |
+| MVDeguzman | `feature/transactions`, `feature/wallets`, `feature/debts` |
+| Nasju17 | `feature/planning`, `feature/investments`, `feature/reports` |
+
+### First time only (after cloning and setup)
+
+```bash
+git fetch origin
+git switch feature/wallets
+```
+
+`git switch` finds your branch on GitHub and sets it up on your PC.
+
+### Every time you start working
+
+```bash
+.venv\Scripts\activate          # 1. turn on Python for this project
+git switch develop              # 2. go to the shared branch
+git pull                        #    get everyone's latest merged work
+git switch feature/wallets      # 3. go back to your branch
+git merge develop               #    bring that work into your branch
+python manage.py migrate        # 4. update the database (if someone changed a model)
+python manage.py runserver 0.0.0.0:8000
+```
+
+### When a piece of work is done
+
+```bash
+python manage.py test                              # 1. everything must pass
+git add .                                          # 2. pick up your changes
+git commit -m "feat: add edit button to wallet cards"   # 3. save them with a prefix
+git push                                           # 4. send them to GitHub
+```
+
+5. On GitHub, click **Compare & pull request**.
+6. Set **base** to **`develop`** (not `main`), fill in the template, and create the pull request.
+7. A teammate reviews and approves it, then it gets merged.
+
+Commit prefixes: `feat:` new feature · `fix:` bug fix · `style:` look/CSS · `refactor:` same behaviour, cleaner code ·
+`docs:` documentation · `test:` tests · `chore:` maintenance.
+
+### Handy commands
+
+| I want to… | Run |
+|---|---|
+| See which branch I'm on | `git branch --show-current` |
+| See what I changed | `git status` |
+| Switch branches but keep unfinished work | `git stash`, switch, then `git stash pop` when you come back |
+| Throw away changes to one file | `git restore path/to/file` |
+
+### If `git merge develop` says CONFLICT
+
+Two people changed the same lines. Open the file in VS Code, choose **Accept Current**, **Accept Incoming** or
+**Accept Both** for each conflict, save, then:
+
+```bash
+git add .
+git commit
+```
+
+### Shared files: tell the team first
+
+`templates/base.html`, `templates/components/`, `templates/form.html`, `static/css/style.css`, `static/js/app.js`,
+`config/` and `apps/core/` affect every screen. Mention it in your team chat before changing them, and keep those
+changes small.
