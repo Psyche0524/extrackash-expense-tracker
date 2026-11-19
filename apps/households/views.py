@@ -13,7 +13,7 @@ from apps.transactions.models import Transaction
 def shared(request):
     home = request.user.households.prefetch_related('members').first()
     if not home:
-        return render(request, 'households/shared.html', {'tab': 'plan'})
+        return render(request, 'shared.html', {'tab': 'plan'})
     members = list(home.members.all())
     shared_tx = Transaction.objects.filter(user__in=members, shared=True, kind='expense', date__gte=_month_start())
     total = _sum(shared_tx)
@@ -21,7 +21,7 @@ def shared(request):
     people = [{'user': m, 'paid': _sum(shared_tx.filter(user=m))} for m in members]
     for p in people:
         p['balance'] = p['paid'] - share  # + means others owe them
-    return render(request, 'households/shared.html', {
+    return render(request, 'shared.html', {
         'home': home, 'members': members, 'people': people, 'total': total, 'share': share,
         'left': home.shared_budget - total, 'pct': int(total / home.shared_budget * 100) if home.shared_budget else 0,
         'tab': 'plan',

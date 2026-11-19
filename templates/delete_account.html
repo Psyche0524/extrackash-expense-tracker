@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete account · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'settings' as back %}{% include 'components/page_header.html' with title='Delete account' %}
+
+<section class="note-card">
+  <h2>This can't be undone.</h2>
+  <p>Your account, transactions, accounts, budgets, goals and plans will be permanently deleted. Export your data first if you want a copy.</p>
+</section>
+
+<form method="post" class="auth-form">
+  {% csrf_token %}
+  <label class="label" for="confirm">Type DELETE to confirm</label>
+  <input id="confirm" name="confirm" autocomplete="off">
+  <button class="btn block danger-btn">Delete my account</button>
+</form>
+{% endblock %}

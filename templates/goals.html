@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}Goals · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'goal_new' as plus %}{% include 'components/page_header.html' with title='Goals' %}
+{% include 'components/plan_tabs.html' %}
+
+<h2 class="headline">Good things, getting closer.</h2>
+<p class="muted">{{ total|peso }} set aside across {{ goals|length }} goal{{ goals|length|pluralize }}</p>
+
+{% for g in goals %}
+<a class="panel" href="{% url 'goal' g.pk %}">
+  <span class="tile">{% icon 'goal' %}</span>
+  <h3>{{ g.name }}</h3>
+  <p class="muted small">{{ g.note }}{% if g.note and g.target_date %} · {% endif %}{{ g.target_date|date:"F Y" }}</p>
+  {% with saved=g.saved %}
+  <div class="bar"><span style="width: {% widthratio saved g.target 100 %}%"></span></div>
+  <p>{{ saved|peso }} of {{ g.target|peso }}</p>
+  {% endwith %}
+</a>
+{% empty %}
+<p class="empty">No goals yet. What are you saving for?</p>
+{% endfor %}
+
+<a class="btn block" href="{% url 'goal_new' %}">+ Create a goal</a>
+{% endblock %}

@@ -18,7 +18,7 @@
     {% if field.field.widget.input_type == 'checkbox' %}
       <label class="check">{{ field }} {{ field.label }}</label>
     {% else %}
-      {% include '_field.html' %}
+      {% include 'components/form_field.html' %}
       {% if field.help_text %}<p class="hint">{{ field.help_text }}</p>{% endif %}
     {% endif %}
   {% endfor %}

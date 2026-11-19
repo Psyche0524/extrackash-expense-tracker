@@ -37,11 +37,27 @@ Each app has `urls.py`; `config/urls.py` includes them all at the site root. URL
 
 ## Templates and static files
 
-- Shared layouts: `templates/base.html` (tab bar, + menu, theme script), `form.html` (every add/edit form),
-  and partials `_head.html`, `_field.html`, `_bars.html`.
-- App pages: `apps/<app>/templates/<app>/*.html`.
+All templates live in one folder, one file per screen:
+
+```text
+templates/
+├── components/        navbar.html (tab bar + add menu), popups.html (toasts), page_header.html,
+│                      form_field.html, mini_bars.html, transaction_row.html, plan_tabs.html
+├── base.html          page frame: head, theme script, popups, content, navbar
+├── form.html          every simple add/edit form
+└── welcome, signup, login, setup, ready, home, history, add, transaction, wallet, cards,
+    transfer, plan, budgets, budget, goals, goal, cashflow, planned, travel, tags, debts,
+    investments, reports, shared, settings, delete_account (.html)
+```
+
+Views render pages by file name, e.g. `render(request, 'wallet.html', ...)`; pages include components with
+`{% include 'components/transaction_row.html' %}`.
+
+Static files:
+
 - Static: `static/css/style.css` (design tokens, light + dark), `static/js/app.js`,
-  `static/icons/icons.svg` (used via `{% icon 'name' %}`), `static/images/`.
+  `static/icons/<name>.svg` (one file per icon, used via `{% icon 'name' %}`; add a file there to add an icon),
+  `static/images/mascot-half.png`.
 
 ## Security notes
 

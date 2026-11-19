@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load icons %}
+
+{% block title %}Settings · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'plan' as back %}{% include 'components/page_header.html' with title='Settings' %}
+
+<h2 class="headline small">{{ user.first_name }}</h2>
+<p class="muted">{{ user.email }}</p>
+
+<p class="label">Personal preferences</p>
+<ul class="list surface">
+  <li><a class="row" href="{% url 'profile_edit' %}"><span class="tile">{% icon 'user' %}</span><span class="row-text"><strong>Edit profile</strong><small>Name and email</small></span>{% icon 'next' %}</a></li>
+  <li class="row"><span class="tile">{% icon 'cash' %}</span><span class="row-text"><strong>Currency</strong><small>Philippine peso</small></span><strong>PHP ₱</strong></li>
+  <li class="row appearance">
+    <span class="tile">{% icon 'moon' %}</span>
+    <span class="row-text"><strong>Appearance</strong><small>Saved on this device</small></span>
+  </li>
+  <li class="appearance-pick">
+    <fieldset class="segmented three" data-theme-picker>
+      <legend class="visually-hidden">Appearance</legend>
+      <input type="radio" name="theme" id="theme-system" value="system"><label for="theme-system">System</label>
+      <input type="radio" name="theme" id="theme-light" value="light"><label for="theme-light">Light</label>
+      <input type="radio" name="theme" id="theme-dark" value="dark"><label for="theme-dark">Dark</label>
+    </fieldset>
+  </li>
+</ul>
+
+<p class="label">Data &amp; privacy</p>
+<ul class="list surface">
+  <li><a class="row" href="{% url 'export' %}"><span class="tile">{% icon 'download' %}</span><span class="row-text"><strong>Export &amp; backup</strong><small>Download all transactions as CSV</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'delete_account' %}"><span class="tile danger">{% icon 'trash' %}</span><span class="row-text"><strong>Delete my account</strong><small>Remove your account and all your data</small></span>{% icon 'next' %}</a></li>
+</ul>
+
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}<button class="btn soft block left">{% icon 'logout' %}Log out</button>
+</form>
+<p class="fine">Extrackash 1.0 · You control what is shared. You can export or delete your data.</p>
+{% endblock %}

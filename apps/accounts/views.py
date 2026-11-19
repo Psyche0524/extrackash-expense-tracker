@@ -10,7 +10,7 @@ from apps.wallets.forms import AccountForm
 def welcome(request):
     if request.user.is_authenticated:
         return redirect('home')
-    return render(request, 'accounts/welcome.html')
+    return render(request, 'welcome.html')
 
 
 def signup(request):
@@ -18,7 +18,7 @@ def signup(request):
     if form.is_valid():
         login(request, form.save())
         return redirect('setup')
-    return render(request, 'accounts/signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 @login_required
@@ -29,12 +29,12 @@ def setup(request):
         account.user = request.user
         account.save()
         return redirect('ready')
-    return render(request, 'accounts/setup.html', {'form': form})
+    return render(request, 'setup.html', {'form': form})
 
 
 @login_required
 def ready(request):
-    return render(request, 'accounts/ready.html')
+    return render(request, 'ready.html')
 
 
 @login_required
