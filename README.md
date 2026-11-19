@@ -53,7 +53,7 @@ extrackash-expense-tracker/
 │   ├── css/                 style.css (design system, light + dark)
 │   ├── js/                  app.js
 │   ├── icons/               icons.svg (line-icon sprite)
-│   ├── images/              logo, mascot
+│   ├── images/              mascot
 │   └── fonts/               (Plus Jakarta Sans loads from Google Fonts)
 ├── docs/                    Architecture notes
 ├── tests/                   Test suite
