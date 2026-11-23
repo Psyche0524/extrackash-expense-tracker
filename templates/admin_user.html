@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load money icons %}
+
+{% block title %}{{ person.first_name|default:person.email }} · Admin · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'admin_users' as back %}{% include 'components/page_header.html' with title='User' %}
+
+<h2 class="headline small">{{ person.first_name|default:"(no name)" }}{% if is_me %} <small class="muted">(you)</small>{% endif %}</h2>
+<p class="muted">{{ person.email|default:person.username }}</p>
+
+<dl class="facts">
+  <div><dt>Joined</dt><dd>{{ person.date_joined|date:"j F Y" }}</dd></div>
+  <div><dt>Last login</dt><dd>{{ person.last_login|date:"j F Y, g:i A"|default:"Never" }}</dd></div>
+  <div><dt>Status</dt><dd>{% if person.is_active %}Active{% else %}<span class="warn-text">Deactivated</span>{% endif %}</dd></div>
+  <div><dt>Role</dt><dd>{% if person.is_superuser %}Superuser{% else %}User{% endif %}</dd></div>
+</dl>
+
+<p class="label">Records</p>
+<div class="two-cards">
+  {% for label, n in counts %}<section class="card"><p class="label">{{ label }}</p><p class="mid num">{{ n }}</p></section>{% endfor %}
+</div>
+
+<h2 class="section-title">Recent transactions</h2>
+<ul class="list surface">
+  {% for t in recent %}
+  <li class="row">
+    <span class="tile {{ t.kind }}">{% if t.kind == 'transfer' %}{% icon 'swap' %}{% else %}{% icon t.category|icon_for %}{% endif %}</span>
+    <span class="row-text"><strong>{{ t.description }}</strong><small>{{ t.get_category_display }} · {{ t.date|date:"M j, Y" }}{% if t.account %} · {{ t.account }}{% endif %}</small></span>
+    <span class="amount {{ t.kind }}">{% if t.kind == 'income' %}+{% elif t.kind == 'expense' %}−{% endif %}{{ t.amount|peso }}</span>
+  </li>
+  {% empty %}<li class="empty">No transactions yet.</li>{% endfor %}
+</ul>
+
+{% if not is_me %}
+<h2 class="section-title">Actions</h2>
+<form method="post" action="{% url 'admin_user_toggle' person.pk %}">
+  {% csrf_token %}
+  <button class="btn soft block left">{% if person.is_active %}Deactivate account{% else %}Activate account{% endif %}</button>
+</form>
+<p class="hint">{% if person.is_active %}They won't be able to log in until you activate them again. Their data stays.{% else %}They'll be able to log in again.{% endif %}</p>
+<form method="post" action="{% url 'admin_user_delete' person.pk %}" onsubmit="return confirm('Delete this user and ALL their records? This cannot be undone.')">
+  {% csrf_token %}
+  <button class="btn block danger-btn">{% icon 'trash' %}Delete user and all records</button>
+</form>
+{% else %}
+<p class="fine">This is your own account. Manage it from Settings.</p>
+{% endif %}
+<a class="btn soft block left" href="{% url 'admin:auth_user_change' person.pk %}" target="_blank" rel="noopener">Open in Django admin</a>
+{% endblock %}
