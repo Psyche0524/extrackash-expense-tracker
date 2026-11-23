@@ -56,11 +56,3 @@ def home(request):
         'recent': user.transactions.select_related('account')[:5],
         'tab': 'home',
     })
-
-@login_required
-def shared(request):
-    user = request.user
-    return render(request, 'shared.html', {
-        'greeting': _greeting(timezone.localtime().hour),
-        'tab': 'shared',
-    })
