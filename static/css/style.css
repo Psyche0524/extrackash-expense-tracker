@@ -484,3 +484,5 @@ select { appearance: none; padding-right: 40px; background: var(--surface) url('
 .toggle-password:hover {
   color: var(--green-text);
 }
+/* "Forgot password?" under the log in password */
+.forgot { text-align: right; margin-top: 10px; }
