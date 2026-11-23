@@ -16,7 +16,7 @@
 
 <form method="post" class="auth-form" novalidate>
   {% csrf_token %}
-  {% if form.non_field_errors %}<ul class="errorlist"><li>Email or password is incorrect.</li></ul>{% endif %}
+  {% if form.non_field_errors %}<ul class="errorlist"><li>Email/username or password is incorrect.</li></ul>{% endif %}
   {% with field=form.username %}{% include 'components/form_field.html' %}{% endwith %}
   {% with field=form.password %}{% include 'components/form_field.html' %}{% endwith %}
   <input type="hidden" name="next" value="{{ next }}">
