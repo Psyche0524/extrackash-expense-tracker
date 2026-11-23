@@ -53,9 +53,19 @@ class SignUpForm(UserCreationForm):
 
 
 class EmailLoginForm(AuthenticationForm):
-    username = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'autofocus': True, 'autocomplete': 'email'}))
+    """Log in with your email (normal sign-ups) or your username (e.g. a superuser made with createsuperuser)."""
+
+    username = forms.CharField(label='Email or username', max_length=254,
+                               widget=forms.TextInput(attrs={'autofocus': True, 'autocomplete': 'username'}))
 
     def clean(self):
-        if self.cleaned_data.get('username'):
-            self.cleaned_data['username'] = self.cleaned_data['username'].lower()
+        login = (self.cleaned_data.get('username') or '').strip()
+        if '@' in login:
+            # Sign-ups store the lower-cased email as their username; a superuser's email is a separate field.
+            login = login.lower()
+            if not User.objects.filter(username=login).exists():
+                match = User.objects.filter(email__iexact=login).first()
+                if match:
+                    login = match.username
+        self.cleaned_data['username'] = login
         return super().clean()

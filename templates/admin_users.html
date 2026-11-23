@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Users · Admin · Extrackash{% endblock %}
+
+{% block content %}
+{% url 'admin_dashboard' as back %}{% include 'components/page_header.html' with title='Users' %}
+
+<form method="get" class="search">
+  <label class="label" for="q">Find a user</label>
+  <input id="q" name="q" type="search" value="{{ q }}" placeholder="Name or email">
+  <input type="hidden" name="show" value="{{ show }}">
+</form>
+
+<nav class="chips" aria-label="Filter">
+  <a href="?show=all&q={{ q|urlencode }}" {% if show == 'all' %}aria-current="page"{% endif %}>All</a>
+  <a href="?show=active&q={{ q|urlencode }}" {% if show == 'active' %}aria-current="page"{% endif %}>Active</a>
+  <a href="?show=inactive&q={{ q|urlencode }}" {% if show == 'inactive' %}aria-current="page"{% endif %}>Inactive</a>
+  <a href="?show=superusers&q={{ q|urlencode }}" {% if show == 'superusers' %}aria-current="page"{% endif %}>Superusers</a>
+</nav>
+
+<p class="muted small">{{ people|length }} user{{ people|length|pluralize }}</p>
+<ul class="list surface">
+  {% for p in people %}{% include 'components/admin_user_row.html' %}{% empty %}<li class="empty">No users match.</li>{% endfor %}
+</ul>
+{% endblock %}

@@ -450,3 +450,37 @@ select { appearance: none; padding-right: 40px; background: var(--surface) url('
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.password-field {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.password-field input {
+  padding-right: 50px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 14px;
+  top: 34px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.toggle-password svg {
+  width: 21px;
+  height: 21px;
+}
+
+.toggle-password:hover {
+  color: var(--green-text);
+}

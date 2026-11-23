@@ -1,0 +1,14 @@
+{% load icons %}<li>
+  <a class="row" href="{% url 'admin_user' p.pk %}">
+    <span class="tile avatar" aria-hidden="true">{{ p.first_name|default:p.email|first|upper }}</span>
+    <span class="row-text">
+      <strong>{{ p.first_name|default:"(no name)" }}</strong>
+      <small>{{ p.email|default:p.username }} · joined {{ p.date_joined|date:"M j, Y" }}</small>
+    </span>
+    <span class="row-end">
+      {% if p.tx_count is not None %}<span class="amount">{{ p.tx_count }}</span><small class="muted">records</small>{% endif %}
+      {% if p.is_superuser %}<small class="acct-chip">Superuser</small>{% endif %}
+      {% if not p.is_active %}<small class="pill out">Inactive</small>{% endif %}
+    </span>
+  </a>
+</li>
