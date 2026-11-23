@@ -19,8 +19,29 @@
   {{ form.non_field_errors }}
   {% with field=form.first_name %}{% include 'components/form_field.html' %}{% endwith %}
   {% with field=form.email %}{% include 'components/form_field.html' %}{% endwith %}
-  {% with field=form.password1 %}{% include 'components/form_field.html' %}{% endwith %}
-  {% with field=form.password2 %}{% include 'components/form_field.html' %}{% endwith %}
+ <div class="password-field">
+  {% with field=form.password1 %}
+    {% include 'components/form_field.html' %}
+  {% endwith %}
+  <button type="button" class="toggle-password" aria-label="Show password" aria-pressed="false">
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  </button>
+</div>
+
+<div class="password-field">
+  {% with field=form.password2 %}
+    {% include 'components/form_field.html' %}
+  {% endwith %}
+  <button type="button" class="toggle-password" aria-label="Show password" aria-pressed="false">
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  </button>
+</div>
   <p class="hint">Use at least 8 characters. Avoid common passwords.</p>
   <button type="submit" class="btn block arrow">Create my space</button>
 </form>

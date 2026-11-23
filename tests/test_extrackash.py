@@ -51,7 +51,18 @@ class AuthTests(TestCase):
     def test_wrong_password_shows_error(self):
         make_user()
         response = self.client.post('/login/', {'username': 'alex@example.com', 'password': 'nope'})
-        self.assertContains(response, 'Email or password is incorrect.')
+        self.assertContains(response, 'Email/username or password is incorrect.')
+
+    def test_superuser_logs_in_with_username_or_email(self):
+        # createsuperuser makes a username that isn't an email, with the email stored separately
+        User.objects.create_superuser('capstoneadmin', 'Admin@Example.com', 'squirrel-cash-26')
+        for login in ('capstoneadmin', 'admin@example.com', 'ADMIN@example.com'):
+            with self.subTest(login=login):
+                response = self.client.post('/login/', {'username': login, 'password': 'squirrel-cash-26'})
+                self.assertRedirects(response, '/')
+                self.client.post('/logout/')
+        wrong = self.client.post('/login/', {'username': 'capstoneadmin', 'password': 'nope'})
+        self.assertContains(wrong, 'Email/username or password is incorrect.')
 
     def test_delete_account_needs_typed_confirmation(self):
         user = make_user()

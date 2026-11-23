@@ -62,8 +62,57 @@ if (picker) {
   });
 }
 
-// Close the + menu when tapping outside it.
 document.addEventListener('click', (e) => {
   const fab = document.querySelector('.fab[open]');
   if (fab && !fab.contains(e.target)) fab.open = false;
+});
+
+document.querySelectorAll('.password-toggle').forEach((button) => {
+  button.addEventListener('click', () => {
+    const wrapper = button.closest('.password-wrapper');
+    const input = wrapper.querySelector('input');
+
+    const isHidden = input.type === 'password';
+
+    input.type = isHidden ? 'text' : 'password';
+
+    button.setAttribute(
+      'aria-label',
+      isHidden ? 'Hide password' : 'Show password'
+    );
+
+    button.setAttribute('aria-pressed', String(isHidden));
+  });
+});
+
+document.querySelectorAll('.toggle-password').forEach((button) => {
+  button.addEventListener('click', () => {
+    const wrapper = button.closest('.password-field');
+    const input = wrapper.querySelector('input');
+
+    const isPassword = input.type === 'password';
+
+    input.type = isPassword ? 'text' : 'password';
+
+    button.setAttribute(
+      'aria-label',
+      isPassword ? 'Hide password' : 'Show password'
+    );
+
+    button.setAttribute('aria-pressed', isPassword);
+
+    button.innerHTML = isPassword
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2">
+           <path d="M3 3l18 18"/>
+           <path d="M10.6 10.6a2 2 0 002.8 2.8"/>
+           <path d="M9.9 5.2A11 11 0 0112 5c6.5 0 10 7 10 7a16 16 0 01-4 4.5"/>
+           <path d="M6.2 6.2C3.5 8 2 12 2 12s3.5 7 10 7c1 0 2-.2 2.9-.5"/>
+         </svg>`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2">
+           <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/>
+           <circle cx="12" cy="12" r="3"/>
+         </svg>`;
+  });
 });
