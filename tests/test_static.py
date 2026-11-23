@@ -22,5 +22,9 @@ class StaticAssetTests(SimpleTestCase):
         for ref in re.findall(r"url\('\.\./([^']+)'\)", css):
             self.assertTrue((STATIC / ref).exists(), ref)
         for template in (Path(settings.BASE_DIR) / 'templates').rglob('*.html'):
-            for ref in re.findall(r"\{% static '([^']+)' %\}", template.read_text(encoding='utf-8')):
+            for ref in re.findall(r"\{% (?:static|asset) '([^']+)' %\}", template.read_text(encoding='utf-8')):
                 self.assertTrue((STATIC / ref).exists(), f'{template.name}: {ref}')
+
+    def test_asset_links_change_when_the_file_changes(self):
+        from apps.core.templatetags.assets import asset
+        self.assertRegex(asset('js/app.js'), r'^/static/js/app\.js\?v=\d+$')

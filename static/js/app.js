@@ -42,19 +42,22 @@ if (swap) {
 // Theme: System / Light / Dark picker in Settings. base.html applies it on load; this keeps it live.
 const root = document.documentElement;
 const systemDark = matchMedia('(prefers-color-scheme: dark)');
-const savedTheme = () => { try { return localStorage.getItem('theme') || 'system'; } catch { return 'system'; } };
+// The current choice lives in this variable; saving it is a bonus. Some browsers (VS Code's preview,
+// private mode) block localStorage, and the picker must still switch the theme there.
+let themePick = 'system';
+try { themePick = localStorage.getItem('theme') || 'system'; } catch { /* blocked: keep 'system' */ }
 const applyTheme = () => {
-  const pick = savedTheme();
-  const dark = pick === 'dark' || (pick === 'system' && systemDark.matches);
+  const dark = themePick === 'dark' || (themePick === 'system' && systemDark.matches);
   root.dataset.theme = dark ? 'dark' : 'light';
   document.querySelector('meta[name=theme-color]').content = dark ? '#0c1411' : '#f3f7f4';
 };
 systemDark.addEventListener('change', applyTheme);  // follow the phone when it switches at sunset
 const picker = document.querySelector('[data-theme-picker]');
 if (picker) {
-  picker.querySelector(`input[value="${savedTheme()}"]`).checked = true;
+  picker.querySelector(`input[value="${themePick}"]`).checked = true;
   picker.addEventListener('change', (e) => {
-    try { localStorage.setItem('theme', e.target.value); } catch { /* private mode: applies for this page only */ }
+    themePick = e.target.value;
+    try { localStorage.setItem('theme', themePick); } catch { /* blocked: works until the page is left */ }
     applyTheme();
   });
 }
