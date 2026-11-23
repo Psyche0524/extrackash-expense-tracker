@@ -36,7 +36,7 @@
 {% if request.user.is_superuser %}
 <p class="label">Superuser &amp; backup</p>
 <ul class="list surface">
-  <li><a class="row" href="{% url 'admin:index' %}" target="_blank" rel="noopener"><span class="tile">{% icon 'settings' %}</span><span class="row-text"><strong>Admin panel</strong><small>Manage all users and records</small></span>{% icon 'next' %}</a></li>
+  <li><a class="row" href="{% url 'admin_dashboard' %}"><span class="tile">{% icon 'settings' %}</span><span class="row-text"><strong>Admin panel</strong><small>Manage all users and records</small></span>{% icon 'next' %}</a></li>
   <li><a class="row" href="{% url 'download_backup' %}"><span class="tile">{% icon 'download' %}</span><span class="row-text"><strong>Full database backup</strong><small>Download all app data as JSON</small></span>{% icon 'next' %}</a></li>
 </ul>
 {% endif %}
