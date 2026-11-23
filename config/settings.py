@@ -140,6 +140,21 @@ STATICFILES_DIRS = [BASE_DIR / 'static']  # css/, js/, icons/, images/, fonts/
 MEDIA_ROOT = BASE_DIR / 'media'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
 
+# Email (password reset links). With no email account set, emails print in the server terminal,
+# which is how we test on our PCs. To send real email, set EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
+# (for Gmail: an App Password, not your normal password). See .env.example.
+if os.environ.get('EMAIL_HOST_USER'):
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Extrackash <no-reply@extrackash.app>')
+PASSWORD_RESET_TIMEOUT = 60 * 60  # reset links expire after 1 hour
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

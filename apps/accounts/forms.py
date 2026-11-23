@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm, UserCreationForm
 from django.contrib.auth.models import User
 
 
@@ -69,3 +69,11 @@ class EmailLoginForm(AuthenticationForm):
                     login = match.username
         self.cleaned_data['username'] = login
         return super().clean()
+
+
+class NewPasswordForm(SetPasswordForm):
+    """Forgot-password 'choose a new password' form, labelled like Sign up."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password2'].label = 'Confirm new password'

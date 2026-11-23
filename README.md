@@ -108,6 +108,13 @@ python manage.py test
 Development needs none. For deployment, copy the names from [.env.example](.env.example) and set them on the server:
 `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `DJANGO_ALLOWED_HOSTS`.
 
+### Forgot password emails
+
+Log in → **Forgot password?** sends a one-time reset link (expires in 1 hour).
+On our PCs no email account is set, so the email **prints in the terminal running `runserver`**: copy the link
+from there into the browser. To send real email, set `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` (for Gmail, an
+App Password) and `DEFAULT_FROM_EMAIL` (see [.env.example](.env.example)).
+
 ## Team
 
 | Developer | Area | Apps |
